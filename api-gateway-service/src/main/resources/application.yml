@@ -1,0 +1,63 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: api-gateway-service
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+            - Path=/user-service/**
+    
+    # eureka server로 eureka client를 연결.
+eureka:
+  instance:
+    # eureka client에 연결할 인스턴스의 아이디를 랜덤하게 생성.
+    # 랜덤 port로 동작하더라도 고유한 인스턴스로 인식.
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    # eureka server의 주소를 지정.
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    # eureka server의 client로 등록.
+    register-with-eureka: true
+
+# routing 설정.
+#  cloud:
+#    gateway:
+#      server:
+#        webmvc:
+#          routes:
+#          # first-api-service에 대한 설정
+#          - id: first-api-service
+#            # first-api-service의 URL
+#            uri: http://localhost:8080/
+#            predicates:
+#            # gateway로 요청된 URL Pattern
+#            - Path=/first-service/**
+#            filters:
+#            - AddRequestHeader=f-request, insert gateway request header
+#            - AddRequestHeader=f-secret, random secret key
+#            - AddRequestHeader=first-request, request header data
+#            - AddResponseHeader=f-response, insert gateway response header
+#          # second-api-service에 대한 설정.
+#          - id: second-api-service
+#            uri: http://localhost:8081/
+#            predicates:
+#            - Path=/second-service/**
+#            filters:
+#            - AddRequestHeader=second-request, second request header data
+          
+          
+          
+          
+          
+          
+          
+          
+          

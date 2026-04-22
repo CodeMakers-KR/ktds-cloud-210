@@ -1,0 +1,12 @@
+# eureka 전용 port: 8761
+server:
+  port: 8761
+
+spring:
+  application:
+    name: service-discovery
+
+# eureka server가 client로 등록되지 않도록 설정.
+eureka:
+  client:
+    register-with-eureka: false

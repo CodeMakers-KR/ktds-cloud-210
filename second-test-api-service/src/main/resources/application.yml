@@ -1,0 +1,19 @@
+server:
+  port: 0 # server port를 랜덤하게 생성.
+
+spring:
+  application:
+    name: second-api-service
+
+# eureka server로 eureka client를 연결.
+eureka:
+  instance:
+    # eureka client에 연결할 인스턴스의 아이디를 랜덤하게 생성.
+    # 랜덤 port로 동작하더라도 고유한 인스턴스로 인식.
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    # eureka server의 주소를 지정.
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    # eureka server의 client로 등록.
+    register-with-eureka: true
