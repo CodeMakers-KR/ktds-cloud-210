@@ -10,6 +10,11 @@ spring:
   application:
     name: user-service-api
 
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath*:com/example/userservice/**/mapper/*Mapper.xml
+  type-aliases-package: com.example.userservice.vo
+    
 # eureka server로 eureka client를 연결.
 eureka:
   instance:
