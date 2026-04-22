@@ -9,6 +9,10 @@ spring:
       server:
         webmvc:
           routes:
+          - id: order-service-api
+            uri: lb://ORDER-SERVICE-API
+            predicates:
+            - Path=/order-service-api/**
           - id: item-service-api
             uri: lb://ITEM-SERVICE-API
             predicates:
