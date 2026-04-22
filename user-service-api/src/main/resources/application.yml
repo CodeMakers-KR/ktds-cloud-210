@@ -2,8 +2,13 @@ server:
   port: 0 # server port를 랜덤하게 생성.
 
 spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: SHOP_USERS
+    password: shopUsers1234
   application:
-    name: user-service-temp
+    name: user-service-api
 
 # eureka server로 eureka client를 연결.
 eureka:
