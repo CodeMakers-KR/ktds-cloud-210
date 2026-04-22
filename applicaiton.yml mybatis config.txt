@@ -1,0 +1,11 @@
+# user-service
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath*:com/example/userservice/**/mapper/*Mapper.xml
+  type-aliases-package: com.example.userservice.vo
+
+# order-service
+  type-aliases-package: com.example.orderservice.vo
+
+# item-service
+  type-aliases-package: com.example.itemservice.vo
