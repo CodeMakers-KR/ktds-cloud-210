@@ -13,6 +13,8 @@ public interface UserDao {
 	int insertNewUser(RegistUserVO registUserVO);
 
 	ResponseUserVO selectOneUserByUserId(String userId);
+	
+	ResponseUserVO selectOneUserByEmail(String email);
 
 	List<ResponseUserVO> selectAllUsers();
 
