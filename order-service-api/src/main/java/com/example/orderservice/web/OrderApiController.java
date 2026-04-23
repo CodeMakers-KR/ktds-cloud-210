@@ -59,7 +59,6 @@ public class OrderApiController {
 			throw new OrderException("주문 수량이 잘못되었습니다.");
 		}
 		
-		
 		ResponseOrderVO newOrder = this.orderService.createNewOrder(requestOrderVO);
 		
 		// 주문한 아이템의 수량을 주문 수량만큼 감소.

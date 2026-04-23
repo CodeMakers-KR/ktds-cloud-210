@@ -19,6 +19,13 @@
         WHERE ITEM_ID = #{_parameter}
     </select>
 
+    <update id="updateStockItem"
+            parameterType="ReqeustUpdateStockVO">
+        UPDATE ITEMS
+           SET STOCK = STOCK - #{orderCount}
+         WHERE ITEM_ID = #{itemId}
+    </update>
+            
 </mapper>
 
 
