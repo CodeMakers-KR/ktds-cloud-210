@@ -11,4 +11,6 @@ public interface ItemDao {
 
 	List<ResponseItemVO> selectAllItems();
 
+	ResponseItemVO selectItem(String itemId);
+
 }

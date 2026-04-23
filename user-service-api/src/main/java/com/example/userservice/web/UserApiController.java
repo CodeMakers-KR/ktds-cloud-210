@@ -63,7 +63,8 @@ public class UserApiController {
 					HttpMethod.GET,
 					null, // HttpHeader
 					new ParameterizedTypeReference<>() {});
-					
+		
+		responseUser.setOrders(usersOrder.getBody());
 		
 		return new ResponseEntity<ResponseUserVO>(responseUser, HttpStatusCode.valueOf(200));
 	}

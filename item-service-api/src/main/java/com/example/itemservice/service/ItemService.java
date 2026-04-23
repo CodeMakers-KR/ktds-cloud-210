@@ -18,4 +18,14 @@ public class ItemService {
 		return this.itemDao.selectAllItems();
 	}
 
+	public ResponseItemVO fetchItem(String itemId) {
+		return this.itemDao.selectItem(itemId);
+	}
+
 }
+
+
+
+
+
+

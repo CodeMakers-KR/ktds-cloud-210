@@ -9,5 +9,18 @@
         , TO_CHAR(CREATE_AT, 'YYYY-MM-DD HH24:MI:SS') CREATE_AT
         FROM ITEMS
     </select>
+    
+    <select id="selectItem"
+        parameterType="string"
+        resultType="ResponseItemVO">
+        SELECT ITEM_ID, ITEM_NAME, STOCK, UNIT_PRICE
+        , TO_CHAR(CREATE_AT, 'YYYY-MM-DD HH24:MI:SS') CREATE_AT
+        FROM ITEMS
+        WHERE ITEM_ID = #{_parameter}
+    </select>
 
 </mapper>
+
+
+
+
