@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +65,21 @@ public class OrderApiController {
 		ResponseOrderVO newOrder = this.orderService.createNewOrder(requestOrderVO);
 		
 		// 주문한 아이템의 수량을 주문 수량만큼 감소.
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.APPLICATION_JSON);
+		
+		String jsonBody = """
+			{ "orderCount": %d }	
+				""".formatted(requestOrderVO.getItemOrderCount());
+		
+		HttpEntity<String> entity = new HttpEntity<>(jsonBody, header);
+		
+		ResponseEntity<ResponseItemVO> orderResult = 
+				this.restTemplate.exchange(
+					itemUrl.formatted(requestOrderVO.getItemId()),
+					HttpMethod.PUT,
+					entity, // HttpHeader
+					new ParameterizedTypeReference<>() {});
 		
 		return new ResponseEntity<ResponseOrderVO>(newOrder, HttpStatusCode.valueOf(201));
 	}
