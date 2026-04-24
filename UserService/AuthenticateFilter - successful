@@ -1,0 +1,15 @@
+UserDetailsImpl userDetail = (UserDetailsImpl) authResult.getPrincipal();
+		Date now = new Date();
+
+		// 1. 토큰의 유효기간 설정.
+		Date expiredDate = new Date(now.getTime() + Duration.ofDays(30).toMillis());
+
+		// 2. 토큰의 암호화를 위한 비밀키 생성.
+		SecretKey secretKey = Keys.hmacShaKeyFor(this.secretKey.getBytes());
+
+		// 3. JsonWebToken 생성 및 반환.
+		String token = Jwts.builder().subject(userDetail.getResponseUserVO().getUserId()).issuedAt(now) // 토큰을 발행한 날짜와
+																										// 시간
+				.expiration(expiredDate) // 토큰이 만료되는 날짜와 시간
+				.signWith(secretKey) // 암호화에 사용될 키.
+				.compact();
