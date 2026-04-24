@@ -3,15 +3,19 @@ package com.example.userservice.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.userservice.dao.UserDao;
 import com.example.userservice.utils.Sha;
+import com.example.userservice.vo.AuthenticateUser;
 import com.example.userservice.vo.RegistUserVO;
 import com.example.userservice.vo.ResponseUserVO;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private UserDao userDao;
@@ -41,4 +45,22 @@ public class UserService {
 	public ResponseUserVO fetchOneUserByEmail(String email) {
 		return this.userDao.selectOneUserByEmail(email);
 	}
+
+	@Override
+	public UserDetails loadUserByUsername(String email) 
+			throws UsernameNotFoundException {
+		ResponseUserVO userData = this.userDao.selectOneUserByEmail(email);
+		
+		if (userData == null) {
+			throw new UsernameNotFoundException("not found user");
+		}
+		
+		return new AuthenticateUser(userData);
+	}
 }
+
+
+
+
+
+
