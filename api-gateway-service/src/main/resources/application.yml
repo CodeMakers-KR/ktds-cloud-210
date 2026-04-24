@@ -1,13 +1,16 @@
 server:
   port: 8000
 
+token:
+  secret: very-long-long-user-token-secret-202507101234
+  
 spring:
   application:
     name: api-gateway-service
   cloud:
     gateway:
       server:
-        webmvc:
+        webflux:
           routes:
           - id: order-service-api
             uri: lb://ORDER-SERVICE-API
@@ -17,10 +20,18 @@ spring:
             uri: lb://ITEM-SERVICE-API
             predicates:
             - Path=/item-service-api/**
+          - id: user-service-login
+            uri: lb://USER-SERVICE-API
+            predicates:
+            - Path=/user-service-api/login
+            filters:
+            - RewritePath=/user-service-api/login, /login
           - id: user-service-api
             uri: lb://USER-SERVICE-API
             predicates:
             - Path=/user-service-api/**
+            filters:
+            - AuthorizationHeaderFilter
           - id: user-service
             uri: lb://USER-SERVICE
             predicates:

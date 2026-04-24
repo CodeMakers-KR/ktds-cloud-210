@@ -3,7 +3,7 @@ package com.example.userservice.security;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class PasswordEncodeImpl implements PasswordEncoder {
+public class PasswordEncoderImpl implements PasswordEncoder {
 
 	@Override
 	public @Nullable String encode(@Nullable CharSequence rawPassword) {

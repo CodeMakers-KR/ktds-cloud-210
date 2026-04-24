@@ -1,6 +1,9 @@
 server:
   port: 0 # server port를 랜덤하게 생성.
 
+token:
+  secret: very-long-long-user-token-secret-202507101234
+
 spring:
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
