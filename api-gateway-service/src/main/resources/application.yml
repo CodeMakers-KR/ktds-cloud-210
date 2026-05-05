@@ -16,16 +16,27 @@ spring:
             uri: lb://ORDER-SERVICE-API
             predicates:
             - Path=/order-service-api/**
+            filters:
+            - AuthorizationHeaderFilter
           - id: item-service-api
             uri: lb://ITEM-SERVICE-API
             predicates:
             - Path=/item-service-api/**
+            filters:
+            - AuthorizationHeaderFilter
           - id: user-service-login
             uri: lb://USER-SERVICE-API
             predicates:
             - Path=/user-service-api/login
             filters:
             - RewritePath=/user-service-api/login, /login
+          - id: user-service-regist
+            uri: lb://USER-SERVICE-API
+            predicates:
+              - Path=/user-service-api/users
+              - Method=POST
+            filters:
+            - AddRequestHeader=ignore-authorization, ignore-auth
           - id: user-service-api
             uri: lb://USER-SERVICE-API
             predicates:

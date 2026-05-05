@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -40,7 +41,8 @@ public class OrderApiController {
 	
 	@PostMapping("/{userId}/orders")
 	public ResponseEntity<ResponseOrderVO> makeNewOrder(@PathVariable String userId,
-			@RequestBody @Valid RequestOrderVO requestOrderVO, BindingResult bindingResult) {
+			@RequestBody @Valid RequestOrderVO requestOrderVO, BindingResult bindingResult,
+			@RequestHeader("Authorization") String token) {
 
 		if (bindingResult.hasErrors()) {
 			throw new OrderException(bindingResult.getFieldErrors());
@@ -48,13 +50,18 @@ public class OrderApiController {
 
 		requestOrderVO.setUserId(userId);
 		
+		HttpHeaders header = new HttpHeaders();
+		header.set("Authorization", token);
+		
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		
 		// 주문한 아이템의 수량을 체크.
 		String itemUrl = "http://ITEM-SERVICE-API/item-service-api/items/%s";
 		ResponseEntity<ResponseItemVO> item = 
 				this.restTemplate.exchange(
 					itemUrl.formatted(requestOrderVO.getItemId()),
 					HttpMethod.GET,
-					null, // HttpHeader
+					entity, // HttpHeader
 					new ParameterizedTypeReference<>() {});
 		
 		ResponseItemVO orderItem = item.getBody();
@@ -65,14 +72,15 @@ public class OrderApiController {
 		ResponseOrderVO newOrder = this.orderService.createNewOrder(requestOrderVO);
 		
 		// 주문한 아이템의 수량을 주문 수량만큼 감소.
-		HttpHeaders header = new HttpHeaders();
+		header = new HttpHeaders();
+		header.set("Authorization", token);
 		header.setContentType(MediaType.APPLICATION_JSON);
 		
 		String jsonBody = """
 			{ "orderCount": %d }	
 				""".formatted(requestOrderVO.getItemOrderCount());
 		
-		HttpEntity<String> entity = new HttpEntity<>(jsonBody, header);
+		entity = new HttpEntity<>(jsonBody, header);
 		
 		ResponseEntity<ResponseItemVO> orderResult = 
 				this.restTemplate.exchange(

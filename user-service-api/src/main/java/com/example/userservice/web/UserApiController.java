@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -51,8 +54,14 @@ public class UserApiController {
 	}
 
 	@GetMapping("/users/{userId}")
-	public ResponseEntity<ResponseUserVO> getOneUsers(@PathVariable String userId) {
+	public ResponseEntity<ResponseUserVO> getOneUsers(@PathVariable String userId,
+			@RequestHeader("Authorization") String token) {
 		ResponseUserVO responseUser = userService.fetchOneUser(userId);
+		
+		HttpHeaders header = new HttpHeaders();
+		header.set("Authorization", token);
+		
+		HttpEntity<String> entity = new HttpEntity<>(header);
 		
 		// Order Service 특정 사용자의 주문 정보.
 		// order service 호출을 위한 url
@@ -61,7 +70,7 @@ public class UserApiController {
 				this.restTemplate.exchange(
 					orderUrl.formatted(userId),
 					HttpMethod.GET,
-					null, // HttpHeader
+					entity, // HttpHeader
 					new ParameterizedTypeReference<>() {});
 		
 		responseUser.setOrders(usersOrder.getBody());

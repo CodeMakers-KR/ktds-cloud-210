@@ -1,4 +1,4 @@
-package com.example.userservice.security;
+package com.example.itemservice.security;
 
 import java.io.IOException;
 import java.util.ArrayList;

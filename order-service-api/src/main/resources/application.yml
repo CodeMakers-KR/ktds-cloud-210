@@ -10,6 +10,10 @@ spring:
   application:
     name: order-service-api
 
+token:
+  secret: very-long-long-user-token-secret-202507101234
+
+    
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath*:com/example/orderservice/**/mapper/*Mapper.xml

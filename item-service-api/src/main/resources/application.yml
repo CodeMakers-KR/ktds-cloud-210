@@ -10,6 +10,9 @@ spring:
   application:
     name: item-service-api
 
+token:
+  secret: very-long-long-user-token-secret-202507101234
+
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath*:com/example/itemservice/**/mapper/*Mapper.xml
